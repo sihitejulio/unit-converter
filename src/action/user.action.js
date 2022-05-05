@@ -1,7 +1,7 @@
 
-import { Types } from './actionTypes';
+import { Types } from './actionType';
 
-export const ActionCreators = {
+export const UserActionCreators = {
 
 //   addProfile: (user) => ({ type: Types.ADD_USER, payload: { user } }),
 

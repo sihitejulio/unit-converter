@@ -3,6 +3,7 @@ import { Types } from '../action/actionType';
 const initialState = {
   profile: {
     phoneNumber: '',
+    token:'',
   }
 }
 

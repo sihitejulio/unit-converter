@@ -1,20 +1,39 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+import {userApi} from '../services/user.service';
+import { connect } from 'react-redux';
+import { UserActionCreators } from '../action/user.action';
 import { Formik, Field, Form } from 'formik';
 
 class Login extends React.Component {
+    constructor(props){
+        super(props);
+
+    }
+    async doLogin(mobileNumber){
+        try {
+            const response = await userApi.login(mobileNumber);
+            localStorage.setItem('mini-bank-token',response.data.token);
+            this.props.dispatch(UserActionCreators.login({token: response.data.token}));
+        } catch (error) {   
+            console.log(error);
+        }
+    }
     render() {
         return (
             <div className="m-5 flex h-screen justify-center items-center flex-col">
                 <label className="flex top-0">Logo</label>
-               
                 <Formik
                     initialValues={{
-                        phone: '1',
+                        phone: '',
                     }}
                     onSubmit={async (values) => {
                         await new Promise((r) => setTimeout(r, 500));
-                        alert(JSON.stringify(values, null, 2));
+                        if(values.phone!=''){
+                            await this.doLogin(values.phone);
+                        }else{
+                            alert('Phone number tidak boleh kosong');
+                        }
                     }}
                 >
                     <Form className="flex flex-col w-full">
@@ -30,4 +49,13 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    console.log(state);
+    // const { loggingIn } = state.authentication;
+    // return {
+    //     loggingIn
+    // };
+}
+
+const connectedLoginPage = connect(mapStateToProps)(Login);
+export { connectedLoginPage as Login }; 
