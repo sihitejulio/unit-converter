@@ -24,7 +24,6 @@ function App() {
    const items = localStorage.getItem('mini-bank-token');
    if (items) {
     dispatch(UserActionCreators.login({token: items}));
-    inc()
    }
   }, [dispatch]);
   return (
@@ -68,5 +67,5 @@ function mapStateToProps(state) {
 }
 
 
-const connectedApp = connect(mapStateToProp)(App);
+const connectedApp = connect(mapStateToProps)(App);
 export { connectedApp as App }; 
