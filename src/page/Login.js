@@ -5,15 +5,20 @@ import { connect } from 'react-redux';
 import { UserActionCreators } from '../action/user.action';
 import { Formik, Field, Form } from 'formik';
 
+import {
+    Navigate,
+    useNavigate,
+} from 'react-router-dom';
 class Login extends React.Component {
     constructor(props){
         super(props);
     }
+  
     async doLogin(mobileNumber){
         try {
             const response = await userApi.login(mobileNumber);
             localStorage.setItem('mini-bank-token',response.data.token);
-            this.props.dispatch(UserActionCreators.login({token: response.data.token}));
+            this.props.dispatch(UserActionCreators.login({type: 'LOGIN', token: response.data.token}));
         } catch (error) {   
             console.log(error);
         }
@@ -30,6 +35,7 @@ class Login extends React.Component {
                         await new Promise((r) => setTimeout(r, 500));
                         if(values.phone!=''){
                             await this.doLogin(values.phone);
+                            return <Navigate to="/OtpVerify" />;
                         }else{
                             alert('Phone number tidak boleh kosong');
                         }
@@ -49,11 +55,8 @@ class Login extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
-    // const { loggingIn } = state.authentication;
-    // return {
-    //     loggingIn
-    // };
+    // console.log(state);
+    return state;
 }
 
 const connectedLoginPage = connect(mapStateToProps)(Login);

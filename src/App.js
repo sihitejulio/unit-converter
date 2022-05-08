@@ -4,38 +4,47 @@ import {Login} from './page/Login';
 import Otp from './page/Otp';
 import Profile from './page/ProfileSetting';
 import ProtectedRoute from './components/ProtectedRoute';
+import LoginRoute from './components/LoginRoute';
 import './App.css';
 import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
 } from "react-router-dom";
 import { connect,useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback} from 'react';
 import { UserActionCreators } from './action/user.action';
 
- 
-
 function App() {
-  const [token, setToken] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const info = useCallback(() => {
+    const items = localStorage.getItem('mini-bank-token');
+    if(items!==''){
+      dispatch(UserActionCreators.login({type: 'LOGIN', token: items}));
+    }
+  }, []);
+
   useEffect(() => {
-   const items = localStorage.getItem('mini-bank-token');
-   if (items) {
-    dispatch(UserActionCreators.login({token: items}));
-   }
-  }, [dispatch]);
+    info();
+  }, [info])
+
   return (
-    // <div className="App w-96 px-5 mt-6 bg-gray-400 shadow rounded">
     <div>
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={  <Login/>} />
+            {/* <Route path="/" element={  <Login/>} /> */}
+            <Route
+              path="/"
+               element={
+                <LoginRoute  path="/">
+                  <Login />
+                </LoginRoute>
+              }
+            />
             <Route
               path="Dashboard"
-              element={
-                <ProtectedRoute>
+               element={
+                <ProtectedRoute  path="Dashboard">
                   <Home />
                 </ProtectedRoute>
               }
@@ -43,7 +52,7 @@ function App() {
              <Route
               path="OtpVerify"
               element={
-                <ProtectedRoute path="OtpVerify">
+                <ProtectedRoute  path="OtpVerify">
                   <Otp />
                 </ProtectedRoute>
               }
@@ -51,7 +60,7 @@ function App() {
             <Route
               path="Profile"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute path="Profile">
                   <Profile />
                 </ProtectedRoute>
               }
@@ -63,7 +72,7 @@ function App() {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
+  return state;
 }
 
 

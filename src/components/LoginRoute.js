@@ -8,22 +8,18 @@ import {
   } from 'react-router-dom';
 
   import { connect } from 'react-redux';
-  import { useEffect, useState, useCallback} from 'react';
   
-  const ProtectedRoute = (state) => {
+  const LoginRoute = (state) => {
     const { user, children, path } = state;
-    console.log(state);
-   
-    if(user.userData.token===null){
-      return <Navigate to="/" replace />;
-    }
 
+    if(!user.isLoginVerify && path==='/' && user.userData.token!==null){
+      return <Navigate to="/OtpVerify" replace />;
+    }
     return children;
-    
   };
 
   function mapStateToProps(state) {
     return state;
 }
 
-export default connect(mapStateToProps)(ProtectedRoute);
+export default connect(mapStateToProps)(LoginRoute);

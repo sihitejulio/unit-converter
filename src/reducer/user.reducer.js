@@ -1,19 +1,24 @@
 import { Types } from '../action/actionType';
 
 const initialState = {
-  profile: {
+  userData: {
     phoneNumber: '',
-    token:'',
-  }
+    token: null,
+  },
+  isLoginVerify:false,
 }
 
 const userReducer = (state = initialState, action) => {
+  console.log('payload',action.payload)
   switch (action.type) {
     case Types.LOGIN:
-    console.log('login', action.payload.user)
+    console.log('login', {
+      ...state,
+      userData: action.payload.user,
+    })
       return {
         ...state,
-        profile: action.payload.user,
+        userData: action.payload.user,
       }
      default:
       return state;
