@@ -12,8 +12,11 @@ import {
 class Login extends React.Component {
     constructor(props){
         super(props);
+       
     }
-  
+    state = {
+        errorLabel: '',
+    };
     async doLogin(mobileNumber){
         try {
             const response = await userApi.login(mobileNumber);
@@ -35,16 +38,19 @@ class Login extends React.Component {
                         await new Promise((r) => setTimeout(r, 500));
                         if(values.phone!=''){
                             await this.doLogin(values.phone);
+                            this.setState({errorLabel: ''});
+
                             return <Navigate to="/OtpVerify" />;
                         }else{
-                            alert('Phone number tidak boleh kosong');
+                            this.setState({errorLabel: 'Phone number tidak boleh kosong'});
                         }
                     }}
                 >
                     <Form className="flex flex-col w-full">
                         <label htmlFor="phone" className="text-sm">Phone Number</label>
+                        <h2 title="errorPhoneNumber" className="text-sm">{this.state.errorLabel}</h2>
                         <Field className="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="phone" name="phone" placeholder="085360867334" />
-                        <button className="h-12 px-6 font-semibold text-sm rounded-md bg-gray-400 text-white" type="submit">Login</button>
+                        <button title ="Login" id="btnLogin" className="h-12 px-6 font-semibold text-sm rounded-md bg-gray-400 text-white" type="submit">Login</button>
                     </Form>
                 </Formik>
                 
