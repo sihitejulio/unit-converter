@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM node:lts
 # FROM node:16.13.2-alpine
 
 # ENV CI=true
