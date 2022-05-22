@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:ubuntu
 
 # ENV CI=true
 ENV PORT=3000
